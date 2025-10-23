@@ -1,4 +1,4 @@
-# SOLID Prensipleri İçin Açıklama:
+# SOLID Prensipleri Açıklaması:
 
 ### Single Responsibility:
 Bu prensip bir sınıfın değişmesi için tek bir sebep olmalıdır der.
