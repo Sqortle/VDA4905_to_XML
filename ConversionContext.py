@@ -1,7 +1,8 @@
 # ConversionContext.py
 import xml.etree.ElementTree as ET
-from typing import Optional # BURASI EKLENECEK
+from typing import Optional
 
+#Data Transfer Object class
 class ConversionContext:
 
     def __init__(self, schedule_no_str, valid_from_date, ean_loc, 

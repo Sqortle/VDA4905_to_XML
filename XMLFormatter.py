@@ -8,16 +8,16 @@ class XMLFormatter:
             cls._instance._initialized = False
         return cls._instance
 
+    #Singleton kontorlü
     def __init__(self):
         if self._initialized:
             return
         self._initialized = True
-        pass  # Şu an init'te ek bir şey yapmıyoruz
+        pass
 
     # indent metodu aynı kalıyor
     def indent(self, elem, level=0):
         i = "\n" + level * "  "
-        # ... geri kalan kod aynı ...
         if len(elem):
             if not elem.text or not elem.text.strip():
                 elem.text = i + "  "

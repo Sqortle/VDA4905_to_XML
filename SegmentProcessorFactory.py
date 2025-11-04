@@ -1,7 +1,7 @@
 # SegmentProcessorFactory.py
 from SegmentProcessors import Segment511Processor, Segment512Processor, Segment513Processor, Segment514Processor
 
-# Factory'nin kullanacağı Sınıf (Class) referansları
+#Factorynin kyllanması gerekne sınıfları mapledik
 PROCESSOR_CLASSES = {
     "511": Segment511Processor,
     "512": Segment512Processor,
@@ -16,14 +16,12 @@ class SegmentProcessorFactory:
         pass
 
     def get_processor(self, tag):
-        """
-        Segment etiketine göre ilgili işlemci sınıfının bir örneğini döndürür.
-        """
+        #tag ile eşleşen sınıfı alıyoruz
         processor_class = PROCESSOR_CLASSES.get(tag)
 
         if processor_class:
-            # Sınıfı bulduktan sonra, onun bir örneğini oluşturur ve döndürür (Fabrika işi)
+            # tage göre sınıf bulup döndürme
             return processor_class()
 
-            # Eğer geçerli bir segment etiketi değilse None döndür (veya hata fırlat)
+            #Tag ile uyuşan sınıf yok ise None döndürür
         return None

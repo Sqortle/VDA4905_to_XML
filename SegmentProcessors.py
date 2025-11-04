@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from ISegmentProcessor import ISegmentProcessor
 from ConversionContext import ConversionContext
 
+#Segment taglerindeki özel durumları kontrol eden class
+#BU dosyada Factory Design kullanılıyor (SegmentProcessorFactory class ı ile birlikte çalışıyor)
 class BaseSegmentProcessor:
     def __init__(self):
         pass

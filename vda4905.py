@@ -1,16 +1,13 @@
 # vda4905.py
 import xml.etree.ElementTree as ET
-from datetime import datetime
-import os  # base_path kullanımı için os modülü kullanışlı olabilir.
-
+import os
 from VDADataParser import VDADataParser
 from XMLFormatter import XMLFormatter  # Singleton
 from FileHandler import FileHandler  # Singleton
 from ConversionContext import ConversionContext
-# from SegmentProcessors import PROCESSORS # Kaldırıldı
 from SegmentProcessorFactory import SegmentProcessorFactory  # Factory
 
-# NOTE: Bu dosya yolu sizin sisteminize özeldir. Lütfen gerekirse güncelleyin.
+#Burası güncellenmeli
 VDA_INPUT_FILENAME = "/Users/mirza/Documents/vda_input.txt"
 VDA_4905_message = ""
 
@@ -19,15 +16,11 @@ class VDA4905Converter:
     def __init__(self, VDA_4905_message):
         self.VDA_4905_message = VDA_4905_message
 
-        # Singleton Örnekleri: Her çağrıda aynı nesneyi döndürür
-        # XMLFormatter ve FileHandler artık Singleton mantığına göre çalışır.
         self.formatter = XMLFormatter()
         self.file_handler = FileHandler()
 
-        # Factory Örneği
         self.processor_factory = SegmentProcessorFactory()
 
-        # Parser örneği (durum tuttuğu için Singleton yapmadık)
         self.parser = VDADataParser()
 
     def convert_and_write_multiple_files(self, VDA_4905_message, base_path):
@@ -92,7 +85,7 @@ class VDA4905Converter:
                     new_element.text = last_delivery_date
                     schedule.insert(insert_index, new_element)
 
-            # XML'i biçimlendir ve dosyaya yaz (Singletonlar kullanılıyor)
+            # XML'i biçimlendir ve dosyaya yaz
             self.formatter.indent(root)
             tree = ET.ElementTree(root)
 
@@ -124,7 +117,7 @@ def main():
         return
 
     try:
-        # NOTE: Bu base_path da sizin sisteminize göre ayarlanmıştır.
+        # Burası güncellenmeli
         base_output_path = "/Users/mirza/PycharmProjects/VDA4905/VDA4905_XML"
 
         converter = VDA4905Converter(VDA_4905_message)
@@ -140,8 +133,7 @@ def main():
 
     except Exception as e:
         print(f"\nAn unhandled error occurred during processing: {e}")
-        # Hata durumunda, hata detaylarını ekrana basmak faydalıdır.
-        # import traceback; traceback.print_exc() # Detaylı hata izi için
+
 
 
 if __name__ == "__main__":

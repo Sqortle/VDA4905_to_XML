@@ -1,26 +1,23 @@
 # FileHandler.py
-import xml.etree.ElementTree as ET
 from datetime import datetime
 
-
+#Dosyayı yazan ve oluşturan sınıf
 class FileHandler:
     _instance = None
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(FileHandler, cls).__new__(cls)
-            # __init__ metodunun sadece bir kez çağrıldığından emin olun
             cls._instance._initialized = False
         return cls._instance
 
+    #Singleton için kontrol
     def __init__(self):
-        # __new__ ile kontrol edildiği için sadece ilk kez çalışacak
         if self._initialized:
             return
         self._initialized = True
-        pass  # Şu an init'te ek bir şey yapmıyoruz
+        pass
 
-    # write_file metodu aynı kalıyor
     def write_file(self, tree, schedule_no_str, ean_loc, dock_code, base_path):
 
         current_date_str = datetime.now().strftime("%Y-%m-%d")
@@ -32,7 +29,6 @@ class FileHandler:
         output_path = base_path.rstrip('/') + '/' + filename
 
         try:
-            # ET.ElementTree kullanılmadığı için tree.write(..) metodunu kullanıyoruz
             tree.write(output_path, encoding="ISO-8859-1", xml_declaration=True)
             return output_path
         except Exception as e:
