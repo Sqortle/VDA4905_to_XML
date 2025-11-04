@@ -7,7 +7,7 @@ from FileHandler import FileHandler  # Singleton
 from ConversionContext import ConversionContext
 from SegmentProcessorFactory import SegmentProcessorFactory  # Factory
 
-#Burası güncellenmeli
+# Burası güncellenmeli
 VDA_INPUT_FILENAME = "/Users/mirza/Documents/vda_input.txt"
 VDA_4905_message = ""
 
@@ -38,62 +38,81 @@ class VDA4905Converter:
         # Eğer çıkış yolu yoksa oluştur
         os.makedirs(base_path, exist_ok=True)
 
+        # ... (Kodu buradan devam ediyor)
+
         for schedule_group in grouped_schedules:
-            schedule_no += 1
-            schedule_no_str = str(schedule_no)
+            try:
+                schedule_no += 1
+                schedule_no_str = str(schedule_no)
 
-            # XML yapısını oluşturma
-            root = ET.Element("SCHEDULES")
-            schedule = ET.SubElement(root, "SCHEDULE")
-            article_lines_el = ET.SubElement(schedule, "ARTICLE_LINES")
-            demand_lines_el = ET.SubElement(schedule, "DEMAND_LINES")
+                # XML yapısını oluşturma
+                root = ET.Element("SCHEDULES")
+                schedule = ET.SubElement(root, "SCHEDULE")
 
-            context = ConversionContext(
-                schedule_no_str, None, ean_loc,
-                schedule, article_lines_el, demand_lines_el
-            )
+                ET.SubElement(schedule, "SUPP_SCHED_TYPE").text = "PLAN"
 
-            # Segment 511 işleme (Factory'den alınıyor)
-            processor_511 = self.processor_factory.get_processor("511")
-            if processor_511:
-                processor_511.process(header_511, context)
+                # ARTICLE_LINES ve DEMAND_LINES elementlerini, processor'lar kullanacağı için başta OLUŞTURUYORUZ
+                article_lines_el = ET.SubElement(schedule, "ARTICLE_LINES")
+                demand_lines_el = ET.SubElement(schedule, "DEMAND_LINES")
 
-            # VALID_FROM değerini context'e ekledikten sonra alıyoruz
-            context.valid_from_date = schedule.find("VALID_FROM").text
+                context = ConversionContext(
+                    schedule_no_str, None, ean_loc,
+                    schedule, article_lines_el, demand_lines_el
+                )
 
-            for segment in schedule_group:
-                tag = segment[0:3]
+                # Segment 511 işleme (Header bilgileri buraya ekleniyor: VENDOR_NO, VALID_FROM, vb.)
+                processor_511 = self.processor_factory.get_processor("511")
+                if processor_511:
+                    processor_511.process(header_511, context)
 
-                # Factory ile işlemci nesnesi oluşturma
-                processor = self.processor_factory.get_processor(tag)
+                # VALID_FROM değerini context'e ekledikten sonra alıyoruz
+                context.valid_from_date = schedule.find("VALID_FROM").text
 
-                if processor:
-                    processor.process(segment, context)
+                for segment in schedule_group:
+                    tag = segment[0:3]
 
-            # VALID_UNTIL (Son Teslimat Tarihi) Ekleme Mantığı
-            last_delivery_date = context.last_delivery_date
+                    # Factory ile işlemci nesnesi oluşturma
+                    processor = self.processor_factory.get_processor(tag)
 
-            if last_delivery_date:
-                insert_index = -1
-                for i, child in enumerate(schedule):
-                    if child.tag == "VALID_FROM":
-                        insert_index = i + 1
-                        break
+                    if processor:
+                        processor.process(segment, context)
 
-                if insert_index != -1:
-                    new_element = ET.Element("VALID_UNTIL")
-                    new_element.text = last_delivery_date
-                    schedule.insert(insert_index, new_element)
+                # VALID_UNTIL (Son Teslimat Tarihi) Ekleme Mantığı
+                last_delivery_date = context.last_delivery_date
 
-            # XML'i biçimlendir ve dosyaya yaz
-            self.formatter.indent(root)
-            tree = ET.ElementTree(root)
+                if last_delivery_date:
+                    insert_index = -1
+                    for i, child in enumerate(schedule):
+                        if child.tag == "VALID_FROM":
+                            insert_index = i + 1
+                            break
 
-            result = self.file_handler.write_file(
-                tree, schedule_no_str, ean_loc, context.dock_code, base_path
-            )
-            if result:
-                output_files.append(result)
+                    if insert_index != -1:
+                        new_element = ET.Element("VALID_UNTIL")
+                        new_element.text = last_delivery_date
+                        schedule.insert(insert_index, new_element)
+
+                # 1. Elementleri mevcut konumlarından çıkarıyoruz
+                schedule.remove(article_lines_el)
+                schedule.remove(demand_lines_el)
+
+                # 2. Elementleri en sona tekrar ekliyoruz
+                schedule.append(article_lines_el)
+                schedule.append(demand_lines_el)
+
+                # XML'i biçimlendir ve dosyaya yaz
+                self.formatter.indent(root)
+                tree = ET.ElementTree(root)
+
+                result = self.file_handler.write_file(
+                    tree, schedule_no_str, ean_loc, context.dock_code, base_path
+                )
+                if result:
+                    output_files.append(result)
+
+            except Exception as e:
+                print(f"Critical Error processing schedule group #{schedule_no_str}: {e}. Skipping this schedule.")
+                # Hata durumunda bu programı atlar ve bir sonrakine geçer.
 
         return output_files
 
@@ -133,7 +152,6 @@ def main():
 
     except Exception as e:
         print(f"\nAn unhandled error occurred during processing: {e}")
-
 
 
 if __name__ == "__main__":
