@@ -92,6 +92,7 @@ class VDA4905Converter:
                         new_element.text = last_delivery_date
                         schedule.insert(insert_index, new_element)
 
+                # XML Hiyerarşisini düzgün şekilde biçimlendirme:
                 # 1. Elementleri mevcut konumlarından çıkarıyoruz
                 schedule.remove(article_lines_el)
                 schedule.remove(demand_lines_el)
@@ -99,6 +100,7 @@ class VDA4905Converter:
                 # 2. Elementleri en sona tekrar ekliyoruz
                 schedule.append(article_lines_el)
                 schedule.append(demand_lines_el)
+                # ------------------------------------------------
 
                 # XML'i biçimlendir ve dosyaya yaz
                 self.formatter.indent(root)
