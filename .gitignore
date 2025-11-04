@@ -1,0 +1,46 @@
+# Genellikle ignore edilenler
+.DS_Store
+.env
+.flaskenv
+__pycache__/
+*.pyc
+*~$
+*.log
+.coverage
+
+# Sanal Ortamlar (Virtual Environments)
+# Sizin venv klasörünüzü görmezden gelmek için hayati
+venv/
+.venv/
+env/
+/bin
+/include
+/lib
+/lib64
+/Scripts
+/share
+
+# Bağımlılıklar (Dependencies)
+# Kurulum sırasında oluşturulan klasörler
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# IDE/Editör Dosyaları
+# PyCharm dosyaları (Sizin projenizin kullandığı IDE'nin)
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Jupyter/IPython Notebook Checkpoint'ları
+.ipynb_checkpoints
+
+# Veritabanları ve Veri Dosyaları (Genellikle büyük olurlar)
+*.db
+*.sqlite3
+
+# Test ve Belgeleme
+/htmlcov/
+.tox/
