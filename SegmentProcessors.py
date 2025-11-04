@@ -11,6 +11,7 @@ class BaseSegmentProcessor:
     def __init__(self):
         pass
 
+    #Tarihleri düzgün formatlama
     def format_date(self, date_value):
         try:
             date_value = date_value.strip()
@@ -21,6 +22,7 @@ class BaseSegmentProcessor:
             # Hatalı tarih formatında boş string döndürürüz
             return ""
 
+    #Quantity lerin başındaki sıfırları atmak için metot
     def safe_int_to_str(self, value_string):
         stripped_value = value_string.strip()
         if not stripped_value:
@@ -32,6 +34,7 @@ class BaseSegmentProcessor:
             # Hatalı sayı formatında varsayılan 0 döndürülür
             return "0"
 
+    #ör: tarih 251000 gibi geldiyse ayın ilk pazartesini alır
     def _get_first_monday_of_month(self, year, month):
         try:
             dt = datetime(year, month, 1)
@@ -44,6 +47,7 @@ class BaseSegmentProcessor:
         except ValueError:
             return None
 
+    #ör: tarih 250043 gibi geldiyse 43. haftanın ilk pazartesisini alır
     def _get_monday_of_week(self, year, week_num):
         try:
             return datetime.fromisocalendar(year, week_num, 1)
