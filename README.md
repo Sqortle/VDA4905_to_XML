@@ -60,5 +60,5 @@ Singleton design, bir sınıfın uygulama boyunca yalnızca tek bir örneğinin 
 
 ## Naıl Yapıldı:
 
-Bu sınıfların yapıcı metodunu (\_\_new__) özel hale getirilerek, sınıfın kendisinin daha önce bir örnek oluşturulup oluşturulmadığını kontrol etmesi sağlandı. Eğer yoksa oluşturur, varsa mevcut örneği geri döndürür.
+Bu sınıfların yapıcı metodunu (\_\_new\_\_) özel hale getirilerek, sınıfın kendisinin daha önce bir örnek oluşturulup oluşturulmadığını kontrol etmesi sağlandı. Eğer yoksa oluşturur, varsa mevcut örneği geri döndürür.
 
