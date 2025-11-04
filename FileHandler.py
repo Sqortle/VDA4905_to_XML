@@ -1,4 +1,3 @@
-# FileHandler.py
 from datetime import datetime
 
 #Dosyayı yazan ve oluşturan sınıf

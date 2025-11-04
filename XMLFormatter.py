@@ -1,4 +1,4 @@
-# XMLFormatter.py
+#XML dosyasında daha güzel bir hiyerarşik görünüm sağlar
 class XMLFormatter:
     _instance = None
 

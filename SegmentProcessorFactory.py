@@ -1,7 +1,6 @@
-# SegmentProcessorFactory.py
 from SegmentProcessors import Segment511Processor, Segment512Processor, Segment513Processor, Segment514Processor
 
-#Factorynin kyllanması gerekne sınıfları mapledik
+#Factorynin kullanması gereken sınıfları mapledik
 PROCESSOR_CLASSES = {
     "511": Segment511Processor,
     "512": Segment512Processor,

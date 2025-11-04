@@ -1,4 +1,4 @@
-
+#her sipariş için ortak olan başlıkları ayarlar
 class VDADataParser:
     def __init__(self):
         pass

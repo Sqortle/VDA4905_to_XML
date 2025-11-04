@@ -1,4 +1,3 @@
-# vda4905.py
 import xml.etree.ElementTree as ET
 import os
 from VDADataParser import VDADataParser
@@ -7,8 +6,9 @@ from FileHandler import FileHandler  # Singleton
 from ConversionContext import ConversionContext
 from SegmentProcessorFactory import SegmentProcessorFactory  # Factory
 
-# Burası güncellenmeli
+# Burası güncellenmeli(servera göre)
 VDA_INPUT_FILENAME = "/Users/mirza/Documents/vda_input.txt"
+base_output_path = "/Users/mirza/PycharmProjects/VDA4905/VDA4905_XML"
 VDA_4905_message = ""
 
 
@@ -38,8 +38,6 @@ class VDA4905Converter:
         # Eğer çıkış yolu yoksa oluştur
         os.makedirs(base_path, exist_ok=True)
 
-        # ... (Kodu buradan devam ediyor)
-
         for schedule_group in grouped_schedules:
             try:
                 schedule_no += 1
@@ -51,7 +49,7 @@ class VDA4905Converter:
 
                 ET.SubElement(schedule, "SUPP_SCHED_TYPE").text = "PLAN"
 
-                # ARTICLE_LINES ve DEMAND_LINES elementlerini, processor'lar kullanacağı için başta OLUŞTURUYORUZ
+                # ARTICLE_LINES ve DEMAND_LINES elementlerini, processor'lar kullanacağı için başta oluşturuyoruz
                 article_lines_el = ET.SubElement(schedule, "ARTICLE_LINES")
                 demand_lines_el = ET.SubElement(schedule, "DEMAND_LINES")
 
@@ -138,9 +136,6 @@ def main():
         return
 
     try:
-        # Burası güncellenmeli
-        base_output_path = "/Users/mirza/PycharmProjects/VDA4905/VDA4905_XML"
-
         converter = VDA4905Converter(VDA_4905_message)
         created_files = converter.convert_and_write_multiple_files(VDA_4905_message, base_path=base_output_path)
 

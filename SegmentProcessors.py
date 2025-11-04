@@ -1,4 +1,3 @@
-# SegmentProcessors.py
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from ISegmentProcessor import ISegmentProcessor
@@ -87,6 +86,7 @@ class BaseSegmentProcessor:
 
         return formatted_date_str, line_type_id
 
+#Segment processorlerinin başlangıcı
 
 class Segment511Processor(BaseSegmentProcessor, ISegmentProcessor):
     def process(self, segment: str, context: ConversionContext):
